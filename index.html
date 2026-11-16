@@ -95,6 +95,42 @@
     backdrop-filter: blur(18px) saturate(135%);
   }
 
+  .bank-details {
+    margin: 0 0 24px;
+    padding: 16px;
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.16);
+    border-radius: 10px;
+  }
+  .bank-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .bank-logo {
+    display: block;
+    width: 42px;
+    height: 44px;
+    padding: 4px;
+    background: #fff;
+    border-radius: 6px;
+    object-fit: contain;
+  }
+  .bank-heading p { margin: 0; }
+  .bank-title { font-weight: 600; }
+  .bank-name { margin-top: 3px !important; color: rgba(255,255,255,.68); font-size: .88rem; }
+  .bank-details dl { display: grid; gap: 10px; margin: 0; }
+  .bank-details dl div {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: baseline;
+  }
+  .bank-details dt { color: rgba(255,255,255,.68); font-size: .88rem; }
+  .bank-details dd { margin: 0; text-align: right; font-weight: 600; }
+  .bank-details .account-number { font-size: 1.08rem; letter-spacing: .04em; }
+
   .motion-ready [data-reveal] {
     opacity: 0;
     transform: translateY(24px);
@@ -242,6 +278,26 @@
     <section class="panel" id="panel" data-reveal>
       <h1>Be part of it</h1>
       <p class="lead">Enter your details and amount. We'll open a prefilled email for you to send.</p>
+
+      <section class="bank-details" aria-label="Bank transfer details">
+        <div class="bank-heading">
+          <img class="bank-logo" src="img/zenith-bank-logo.svg" alt="" width="42" height="44">
+          <div>
+            <p class="bank-title">Send donations to</p>
+            <p class="bank-name">Zenith Bank</p>
+          </div>
+        </div>
+        <dl>
+          <div>
+            <dt>Account name</dt>
+            <dd>Awodi Helen Mafeng</dd>
+          </div>
+          <div>
+            <dt>Account number</dt>
+            <dd class="account-number">2209320275</dd>
+          </div>
+        </dl>
+      </section>
 
       <form id="donate" action="mailto:benalfa2glory@gmail.com" method="GET" novalidate>
         <div class="field">
