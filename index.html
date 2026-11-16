@@ -8,20 +8,16 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet">
 <style>
-  /* ===== EDIT THESE TWO THINGS =====
-     1. Put your invitation card image next to this file and name it invitation-card.jpg
-        (or change the filename below).
-     2. Replace YOUR_FORM_ID in the <form action> further down with your Formspree form ID. */
+  /* Invitation artwork used by the card and backdrop. */
   :root {
-    --card-image: url("invitation-card.jpg");
+    --card-image: url("img/nq1.jpg");
 
     --ink: #14213d;
-    --paper: #ffffff;
+    --paper: rgba(8,12,24,.78);
     --muted: #5b6475;
     --line: #d9dde5;
     --gold: #c9a24b;
     --error: #b3261e;
-    --ok: #1f7a4d;
   }
 
   *, *::before, *::after { box-sizing: border-box; }
@@ -90,9 +86,13 @@
 
   .panel {
     background: var(--paper);
+    border: 1px solid rgba(255,255,255,.2);
     border-radius: 14px;
     padding: clamp(22px, 3.2vw, 38px);
     box-shadow: 0 24px 60px rgba(0,0,0,.35);
+    color: #f7f5ef;
+    -webkit-backdrop-filter: blur(18px) saturate(135%);
+    backdrop-filter: blur(18px) saturate(135%);
   }
 
   .motion-ready [data-reveal] {
@@ -103,6 +103,21 @@
   .motion-ready [data-reveal].is-visible {
     opacity: 1;
     transform: translateY(0);
+  }
+  @keyframes backdrop-arrive {
+    from { opacity: .4; transform: scale(1.08); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes card-arrive {
+    from { opacity: .65; transform: translateY(28px) scale(.94) rotateY(-7deg); }
+    to { opacity: 1; transform: translateY(0) scale(1) rotateY(0); }
+  }
+  .motion-ready .backdrop {
+    animation: backdrop-arrive 1.4s ease-out both;
+  }
+  .motion-ready .card-wrap { perspective: 1200px; }
+  .motion-ready .card-wrap .card {
+    animation: card-arrive .9s .12s cubic-bezier(.2,.7,.2,1) both;
   }
   .motion-ready .panel[data-reveal]:not(.is-visible) .field,
   .motion-ready .panel[data-reveal]:not(.is-visible) .submit {
@@ -130,7 +145,7 @@
   }
   .panel p.lead {
     margin: 0 0 26px;
-    color: var(--muted);
+    color: rgba(255,255,255,.74);
     line-height: 1.55;
     max-width: 44ch;
   }
@@ -184,41 +199,17 @@
     margin-top: 6px;
     font: inherit; font-weight: 600; font-size: 1.02rem;
     padding: 15px 18px;
-    background: var(--ink); color: #fff;
+    background: var(--gold); color: var(--ink);
     border: 0; border-radius: 8px;
     cursor: pointer;
     transition: background .15s, transform .05s;
   }
-  .submit:hover { background: #0c1630; }
+  .submit:hover { background: #ddb85e; }
   .submit:active { transform: translateY(1px); }
   .submit:focus-visible { outline: none; box-shadow: 0 0 0 4px rgba(201,162,75,.6); }
   .submit[disabled] { opacity: .65; cursor: progress; }
 
-  .form-error {
-    margin-top: 14px; padding: 12px 14px;
-    background: #fdecea; color: var(--error);
-    border-radius: 8px; font-size: .92rem; line-height: 1.45;
-  }
-  .form-error:empty { display: none; }
-
   .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
-
-  .success { display: none; text-align: left; }
-  .success .tick {
-    width: 46px; height: 46px; border-radius: 50%;
-    background: #e5f4ec; color: var(--ok);
-    display: grid; place-items: center; margin-bottom: 16px;
-  }
-  .success h2 { font-family: "Newsreader", Georgia, serif; font-size: 1.7rem; margin: 0 0 8px; }
-  .success p { margin: 0 0 20px; color: var(--muted); line-height: 1.55; }
-  .success .again {
-    font: inherit; font-weight: 600; color: var(--ink);
-    background: none; border: 1.5px solid var(--line); border-radius: 8px;
-    padding: 11px 16px; cursor: pointer;
-  }
-  .success .again:focus-visible { outline: none; box-shadow: 0 0 0 4px rgba(201,162,75,.4); }
-  .panel.done form, .panel.done h1, .panel.done .lead { display: none; }
-  .panel.done .success { display: block; }
 
   /* Mobile: card on top, form below */
   @media (max-width: 860px) {
@@ -235,7 +226,7 @@
     .scroll-progress { display: none; }
   }
   @media (prefers-color-scheme: dark) {
-    /* page is already dark; the form panel stays light for legibility */
+    /* The page is dark; text inputs stay light for legibility. */
   }
 </style>
 </head>
@@ -250,10 +241,9 @@
 
     <section class="panel" id="panel" data-reveal>
       <h1>Be part of it</h1>
-      <p class="lead">Enter your details and the amount you'd like to give. We'll be in touch on the number you provide.</p>
+      <p class="lead">Enter your details and amount. We'll open a prefilled email for you to send.</p>
 
-      <!-- Replace YOUR_FORM_ID with your Formspree form ID, e.g. https://formspree.io/f/xyzabcde -->
-      <form id="donate" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
+      <form id="donate" action="mailto:benalfa2glory@gmail.com" method="GET" novalidate>
         <div class="field">
           <label for="name">Full name</label>
           <input type="text" id="name" name="name" autocomplete="name" required>
@@ -281,33 +271,18 @@
           <p class="err" id="amount-err"></p>
         </div>
 
-        <input type="hidden" name="currency" value="NGN">
-        <input type="hidden" name="_subject" value="New donation pledge">
-        <div class="hp" aria-hidden="true"><label>Leave blank <input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></div>
-
-        <button type="submit" class="submit" id="submit">Submit my pledge</button>
-        <div class="form-error" id="form-error" role="alert"></div>
+        <button type="submit" class="submit">Continue to email</button>
       </form>
-
-      <div class="success" id="success" role="status" aria-live="polite">
-        <div class="tick" aria-hidden="true">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
-        </div>
-        <h2>Thank you, <span id="thanks-name"></span></h2>
-        <p>Your pledge of <strong id="thanks-amt"></strong> has been received. We'll contact you on <span id="thanks-phone"></span>.</p>
-        <button type="button" class="again" id="again">Make another pledge</button>
-      </div>
     </section>
   </main>
 
 <script>
 (function () {
   var form = document.getElementById('donate');
-  var panel = document.getElementById('panel');
-  var btn = document.getElementById('submit');
+  var nameInput = document.getElementById('name');
+  var phoneInput = document.getElementById('phone');
   var amount = document.getElementById('amount');
   var chips = Array.prototype.slice.call(document.querySelectorAll('.chip'));
-  var formErr = document.getElementById('form-error');
   var reveals = Array.prototype.slice.call(document.querySelectorAll('[data-reveal]'));
   var progressFrame = null;
 
@@ -318,8 +293,18 @@
     document.documentElement.style.setProperty('--scroll-progress', String(Math.min(1, Math.max(0, progress))));
   }
 
+  function revealVisibleElements() {
+    reveals.forEach(function (element) {
+      var rect = element.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        element.classList.add('is-visible');
+      }
+    });
+  }
+
   function onScroll() {
     if (progressFrame === null) progressFrame = window.requestAnimationFrame(updateScrollProgress);
+    revealVisibleElements();
   }
 
   if ('IntersectionObserver' in window) {
@@ -333,11 +318,19 @@
       });
     }, { threshold: 0.15, rootMargin: '0px 0px -24px 0px' });
 
-    reveals.forEach(function (element) { revealObserver.observe(element); });
+    reveals.forEach(function (element) {
+      var rect = element.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        element.classList.add('is-visible');
+      } else {
+        revealObserver.observe(element);
+      }
+    });
   } else {
     reveals.forEach(function (element) { element.classList.add('is-visible'); });
   }
 
+  revealVisibleElements();
   updateScrollProgress();
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
@@ -366,13 +359,13 @@
 
   function validate() {
     var ok = true, first = null;
-    var name = form.name.value.trim();
-    var phone = form.phone.value.replace(/[\s\-()]/g, '');
+    var name = nameInput.value.trim();
+    var phone = phoneInput.value.replace(/[\s\-()]/g, '');
     var amt = Number(amount.value);
 
-    if (name.length < 2) { setErr('name', 'Enter your full name.'); ok = false; first = first || form.name; } else setErr('name', '');
+    if (name.length < 2) { setErr('name', 'Enter your full name.'); ok = false; first = first || nameInput; } else setErr('name', '');
     if (!/^(\+?234|0)[789][01]\d{8}$/.test(phone) && !/^\+?\d{10,15}$/.test(phone)) {
-      setErr('phone', 'Enter a valid phone number, e.g. 0803 000 0000.'); ok = false; first = first || form.phone;
+      setErr('phone', 'Enter a valid phone number, e.g. 0803 000 0000.'); ok = false; first = first || phoneInput;
     } else setErr('phone', '');
     if (!amt || amt < 100) { setErr('amount', 'Enter an amount of \u20A6100 or more.'); ok = false; first = first || amount; } else setErr('amount', '');
 
@@ -382,44 +375,17 @@
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-    formErr.textContent = '';
     if (!validate()) return;
 
-    if (form.action.indexOf('YOUR_FORM_ID') !== -1) {
-      formErr.textContent = 'This form is not connected yet. Replace YOUR_FORM_ID in the form action with your Formspree form ID.';
-      return;
-    }
-
-    btn.disabled = true;
-    btn.textContent = 'Sending\u2026';
-
-    fetch(form.action, {
-      method: 'POST',
-      body: new FormData(form),
-      headers: { 'Accept': 'application/json' }
-    }).then(function (res) {
-      if (res.ok) {
-        document.getElementById('thanks-name').textContent = form.name.value.trim().split(' ')[0];
-        document.getElementById('thanks-amt').textContent = fmt(amount.value);
-        document.getElementById('thanks-phone').textContent = form.phone.value.trim();
-        panel.classList.add('done');
-        form.reset(); syncChips();
-      } else {
-        return res.json().then(function (d) {
-          throw new Error(d && d.errors ? d.errors.map(function (x) { return x.message; }).join(', ') : 'Submission failed.');
-        });
-      }
-    }).catch(function (err) {
-      formErr.textContent = (err && err.message ? err.message + ' ' : '') + 'Check your connection and try again.';
-    }).finally(function () {
-      btn.disabled = false;
-      btn.textContent = 'Submit my pledge';
-    });
-  });
-
-  document.getElementById('again').addEventListener('click', function () {
-    panel.classList.remove('done');
-    form.name.focus();
+    var message = [
+      'Donation pledge',
+      'Name: ' + nameInput.value.trim(),
+      'Phone: ' + phoneInput.value.trim(),
+      'Amount: ' + fmt(amount.value)
+    ].join('\n');
+    var emailUrl = form.action + '?subject=' + encodeURIComponent('Donation pledge') +
+      '&body=' + encodeURIComponent(message);
+    window.location.assign(emailUrl);
   });
 })();
 </script>
