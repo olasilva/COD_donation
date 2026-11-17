@@ -169,7 +169,8 @@
   .motion-ready .panel[data-reveal].is-visible .field:nth-of-type(1) { transition-delay: .08s; }
   .motion-ready .panel[data-reveal].is-visible .field:nth-of-type(2) { transition-delay: .16s; }
   .motion-ready .panel[data-reveal].is-visible .field:nth-of-type(3) { transition-delay: .24s; }
-  .motion-ready .panel[data-reveal].is-visible .submit { transition-delay: .32s; }
+  .motion-ready .panel[data-reveal].is-visible .field:nth-of-type(4) { transition-delay: .32s; }
+  .motion-ready .panel[data-reveal].is-visible .submit { transition-delay: .4s; }
 
   .panel h1 {
     font-family: "Newsreader", Georgia, serif;
@@ -199,6 +200,23 @@
     border-radius: 8px;
     transition: border-color .15s, box-shadow .15s;
   }
+  input[type="file"] {
+    width: 100%;
+    font: inherit;
+    font-size: .9rem;
+    color: rgba(255,255,255,.82);
+  }
+  input[type="file"]::file-selector-button {
+    margin-right: 10px;
+    padding: 9px 12px;
+    font: inherit;
+    color: var(--ink);
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .field-hint { margin: 7px 0 0; color: rgba(255,255,255,.68); font-size: .84rem; }
   input:focus-visible {
     outline: none;
     border-color: var(--ink);
@@ -245,6 +263,93 @@
   .submit:focus-visible { outline: none; box-shadow: 0 0 0 4px rgba(201,162,75,.6); }
   .submit[disabled] { opacity: .65; cursor: progress; }
 
+  .form-feedback {
+    display: none;
+    margin: 14px 0 0;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: .92rem;
+    line-height: 1.45;
+  }
+  .form-feedback:not(:empty) { display: block; }
+  .form-feedback.is-error { background: rgba(179,38,30,.2); color: #ffc9c5; }
+  .form-feedback.is-success { background: rgba(31,122,77,.22); color: #b7f0d0; }
+
+  .instructions-dialog {
+    width: min(540px, calc(100% - 32px));
+    max-width: none;
+    max-height: min(85vh, 680px);
+    padding: 0;
+    overflow-y: auto;
+    color: #f7f5ef;
+    background: rgba(8,12,24,.96);
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 16px;
+    box-shadow: 0 28px 90px rgba(0,0,0,.55);
+    -webkit-backdrop-filter: blur(20px) saturate(135%);
+    backdrop-filter: blur(20px) saturate(135%);
+  }
+  .instructions-dialog[open] { animation: instructions-enter .24s ease-out both; }
+  .instructions-dialog::backdrop {
+    background: rgba(4,8,18,.76);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+  }
+  @keyframes instructions-enter {
+    from { opacity: 0; transform: translateY(14px) scale(.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .instructions-content { padding: clamp(24px, 5vw, 36px); }
+  .instructions-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    color: rgba(255,255,255,.8);
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.16);
+    border-radius: 50%;
+    font: inherit;
+    font-size: 1.3rem;
+    cursor: pointer;
+  }
+  .instructions-close:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+  .instructions-eyebrow {
+    margin: 0 0 8px;
+    color: var(--gold);
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+  .instructions-dialog h2 {
+    margin: 0 40px 10px 0;
+    font-family: "Newsreader", Georgia, serif;
+    font-size: clamp(1.7rem, 5vw, 2.1rem);
+    line-height: 1.1;
+  }
+  .instructions-intro { margin: 0; color: rgba(255,255,255,.72); line-height: 1.5; }
+  .instructions-steps {
+    display: grid;
+    gap: 14px;
+    margin: 22px 0;
+    padding-left: 22px;
+    line-height: 1.5;
+  }
+  .instructions-steps li { padding-left: 4px; }
+  .instructions-steps li::marker { color: var(--gold); font-weight: 700; }
+  .instructions-steps strong { color: #fff; }
+  .instructions-account {
+    display: block;
+    margin-top: 5px;
+    color: rgba(255,255,255,.76);
+    font-size: .92rem;
+  }
+  .instructions-dialog .submit { margin-top: 4px; }
+
   .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
   /* Mobile: card on top, form below */
@@ -270,6 +375,25 @@
   <div class="scroll-progress" aria-hidden="true"></div>
   <div class="backdrop" aria-hidden="true"></div>
 
+  <dialog class="instructions-dialog" id="instructions-dialog" aria-labelledby="instructions-title" aria-describedby="instructions-intro">
+    <div class="instructions-content">
+      <button type="button" class="instructions-close" id="close-instructions" aria-label="Close instructions">&times;</button>
+      <p class="instructions-eyebrow">Donation guide</p>
+      <h2 id="instructions-title">How to make your donation</h2>
+      <p class="instructions-intro" id="instructions-intro">Follow these steps to complete your transfer and submit your details.</p>
+      <ol class="instructions-steps">
+        <li>
+          <strong>Transfer your donation</strong>
+          <span class="instructions-account">Zenith Bank · Awodi Helen Mafeng · 2209320275</span>
+        </li>
+        <li><strong>Fill in the form</strong> with your name, phone number, and the amount transferred.</li>
+        <li><strong>Upload your receipt</strong> (optional) as a JPG, PNG, WebP, or PDF.</li>
+        <li><strong>Submit your donation.</strong> Your details and any attached receipt will be sent through Formspree.</li>
+      </ol>
+      <button type="button" class="submit" id="continue-instructions" autofocus>Continue to form</button>
+    </div>
+  </dialog>
+
   <main class="page">
     <div class="card-wrap" data-reveal>
       <div class="card" role="img" aria-label="Invitation card"></div>
@@ -277,7 +401,7 @@
 
     <section class="panel" id="panel" data-reveal>
       <h1>Be part of it</h1>
-      <p class="lead">Enter your details and amount. We'll open a prefilled email for you to send.</p>
+      <p class="lead">After transferring to the Zenith account, enter your details and optionally upload your receipt.</p>
 
       <section class="bank-details" aria-label="Bank transfer details">
         <div class="bank-heading">
@@ -299,7 +423,7 @@
         </dl>
       </section>
 
-      <form id="donate" action="mailto:benalfa2glory@gmail.com" method="GET" novalidate>
+      <form id="donate" action="https://formspree.io/f/mjywwkpp" method="POST" enctype="multipart/form-data" novalidate>
         <div class="field">
           <label for="name">Full name</label>
           <input type="text" id="name" name="name" autocomplete="name" required>
@@ -327,8 +451,15 @@
           <p class="err" id="amount-err"></p>
         </div>
 
-        <button type="submit" class="submit">Continue to email</button>
+        <div class="field">
+          <label for="receipt">Transfer receipt (optional)</label>
+          <input type="file" id="receipt" name="receipt" accept=".jpg,.jpeg,.png,.webp,.pdf">
+          <p class="field-hint">Attach a JPG, PNG, WebP, or PDF receipt.</p>
+        </div>
+
+        <button type="submit" class="submit" id="submit">Submit donation</button>
       </form>
+      <p class="form-feedback" id="form-feedback" role="status" aria-live="polite"></p>
     </section>
   </main>
 
@@ -338,9 +469,26 @@
   var nameInput = document.getElementById('name');
   var phoneInput = document.getElementById('phone');
   var amount = document.getElementById('amount');
+  var receiptInput = document.getElementById('receipt');
+  var submitButton = document.getElementById('submit');
+  var feedback = document.getElementById('form-feedback');
+  var instructionsDialog = document.getElementById('instructions-dialog');
+  var closeInstructions = document.getElementById('close-instructions');
+  var continueInstructions = document.getElementById('continue-instructions');
   var chips = Array.prototype.slice.call(document.querySelectorAll('.chip'));
   var reveals = Array.prototype.slice.call(document.querySelectorAll('[data-reveal]'));
   var progressFrame = null;
+
+  function closeInstructionsDialog() {
+    if (typeof instructionsDialog.close === 'function') instructionsDialog.close();
+    else instructionsDialog.removeAttribute('open');
+  }
+
+  closeInstructions.addEventListener('click', closeInstructionsDialog);
+  continueInstructions.addEventListener('click', closeInstructionsDialog);
+  instructionsDialog.addEventListener('close', function () { nameInput.focus(); });
+  if (typeof instructionsDialog.showModal === 'function') instructionsDialog.showModal();
+  else instructionsDialog.setAttribute('open', '');
 
   function updateScrollProgress() {
     progressFrame = null;
@@ -391,8 +539,6 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
 
-  function fmt(n) { return '\u20A6' + Number(n).toLocaleString('en-NG'); }
-
   function syncChips() {
     chips.forEach(function (c) {
       c.setAttribute('aria-pressed', String(Number(c.dataset.amt) === Number(amount.value)));
@@ -429,19 +575,51 @@
     return ok;
   }
 
+  function showFeedback(message, isError) {
+    feedback.textContent = message;
+    feedback.className = 'form-feedback ' + (isError ? 'is-error' : 'is-success');
+  }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     if (!validate()) return;
 
-    var message = [
-      'Donation pledge',
-      'Name: ' + nameInput.value.trim(),
-      'Phone: ' + phoneInput.value.trim(),
-      'Amount: ' + fmt(amount.value)
-    ].join('\n');
-    var emailUrl = form.action + '?subject=' + encodeURIComponent('Donation pledge') +
-      '&body=' + encodeURIComponent(message);
-    window.location.assign(emailUrl);
+    if (form.action.indexOf('/YOUR_FORM_ID') !== -1) {
+      showFeedback('Connect your Formspree form by replacing YOUR_FORM_ID in the form action.', true);
+      return;
+    }
+
+    feedback.textContent = '';
+    feedback.className = 'form-feedback';
+    submitButton.disabled = true;
+    submitButton.textContent = 'Submitting…';
+
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    }).then(function (response) {
+      if (response.ok) {
+        form.hidden = true;
+        var submittedItems = receiptInput.files.length ? 'donation details and receipt' : 'donation details';
+        showFeedback('Thank you. Your ' + submittedItems + ' have been submitted.', false);
+        return;
+      }
+
+      return response.json().then(function (data) {
+        var message = data && data.errors
+          ? data.errors.map(function (error) { return error.message; }).join(', ')
+          : 'Formspree could not accept the submission.';
+        throw new Error(message);
+      }, function () {
+        throw new Error('Formspree could not accept the submission.');
+      });
+    }).catch(function (error) {
+      showFeedback('Submission failed: ' + error.message + ' Please try again.', true);
+    }).finally(function () {
+      submitButton.disabled = false;
+      submitButton.textContent = 'Submit donation';
+    });
   });
 })();
 </script>
