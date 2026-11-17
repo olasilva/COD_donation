@@ -10,7 +10,7 @@
 <style>
   /* Invitation artwork used by the card and backdrop. */
   :root {
-    --card-image: url("img/nq1.jpg");
+    --card-image: url("img/updatedflier.jpg");
 
     --ink: #14213d;
     --paper: rgba(8,12,24,.78);
@@ -71,7 +71,7 @@
   /* The card shown sharp */
   .card-wrap { display: flex; justify-content: center; }
   .card {
-    width: 100%;
+    width: min(100%, 560px, 65.6vh);
     max-width: 560px;
     aspect-ratio: 4 / 5;
     max-height: 82vh;
@@ -194,12 +194,13 @@
     font: inherit;
     font-size: 1rem;
     padding: 13px 14px;
-    color: var(--ink);
-    background: #fff;
-    border: 1.5px solid var(--line);
+    color: #f7f5ef;
+    background: transparent;
+    border: 1.5px solid rgba(255,255,255,.34);
     border-radius: 8px;
     transition: border-color .15s, box-shadow .15s;
   }
+  input::placeholder { color: rgba(255,255,255,.54); opacity: 1; }
   input[type="file"] {
     width: 100%;
     font: inherit;
@@ -210,24 +211,24 @@
     margin-right: 10px;
     padding: 9px 12px;
     font: inherit;
-    color: var(--ink);
-    background: #fff;
-    border: 1px solid var(--line);
+    color: #f7f5ef;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,.34);
     border-radius: 6px;
     cursor: pointer;
   }
   .field-hint { margin: 7px 0 0; color: rgba(255,255,255,.68); font-size: .84rem; }
   input:focus-visible {
     outline: none;
-    border-color: var(--ink);
+    border-color: var(--gold);
     box-shadow: 0 0 0 4px rgba(201,162,75,.4);
   }
-  input[aria-invalid="true"] { border-color: var(--error); }
+  input[aria-invalid="true"] { border-color: #ff857d; }
 
   .amount-box { position: relative; }
   .amount-box .naira {
     position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-    font-weight: 600; color: var(--muted); pointer-events: none;
+    font-weight: 600; color: rgba(255,255,255,.72); pointer-events: none;
   }
   .amount-box input { padding-left: 34px; font-weight: 600; font-variant-numeric: tabular-nums; }
 
@@ -235,15 +236,15 @@
   .chip {
     font: inherit; font-size: .9rem; font-weight: 500;
     padding: 8px 14px;
-    background: #fff; color: var(--ink);
-    border: 1.5px solid var(--line);
+    background: transparent; color: #f7f5ef;
+    border: 1.5px solid rgba(255,255,255,.34);
     border-radius: 999px;
     cursor: pointer;
     transition: background .15s, border-color .15s, color .15s;
   }
-  .chip:hover { border-color: var(--ink); }
+  .chip:hover { border-color: var(--gold); }
   .chip:focus-visible { outline: none; box-shadow: 0 0 0 4px rgba(201,162,75,.4); }
-  .chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .chip[aria-pressed="true"] { background: var(--gold); border-color: var(--gold); color: var(--ink); }
 
   .err { color: var(--error); font-size: .85rem; margin: 6px 0 0; min-height: 0; }
   .err:empty { display: none; }
